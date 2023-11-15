@@ -13,22 +13,25 @@
 
 int _printf(const char *format, ...)
 {
-	int i, printed = 0, printed_c = 0;
-	int _flag, _width, _precision, _size, buff_id = 0;
-	va_list args;
+	int i = 0, printed, printed_1 = 0;
+	int buff_id = 0, _flag, _width, _precision, _size;
 	char buff[BUFF_SIZE];
+	va_list args;
+
+	va_start(args, format);
 
 	if (format == NULL)
 		return (-1);
-	va_start(args, format);
-	for (i = 0; format && format[i] != '\0'; i++)
+	while (format && format[i] != '\0')
 	{
 		if (format[i] != '%')
 		{
 			buff[buff_id++] = format[i];
 			if (buff_id == BUFF_SIZE)
+			{
 				_buff(buff, &buff_id);
-			printed_c++;
+			}
+			printed_1++;
 		}
 		else
 		{
@@ -42,11 +45,11 @@ int _printf(const char *format, ...)
 					_flag, _width, _precision, _size);
 			if (printed == -1)
 				return (-1);
-			printed_c += printed;
+			printed_1 += printed;
 		}
+		++i;
 	}
-
 	_buff(buff, &buff_id);
 	va_end(args);
-	return (printed_c);
+	return (printed_1);
 }
